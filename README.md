@@ -16,3 +16,7 @@ The code should be runnable with the default settings of the website.
 There are three functions `test_concatenate()`, `test_reverse()` and `test_triple()` in `main.py`.
 Inside each of the function, there is a variable called `lst_inputs` that defines test cases for each RAM program.
 You can add new test cases by adding new strings at the end of `lst_inputs`.
+
+## Input format of the interpreter
+
+Checkout the function `read_me_for_the_explanation_of_the_interpreters_input_format()`

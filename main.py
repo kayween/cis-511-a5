@@ -60,10 +60,10 @@ def interpreter(program, registers, alphabet, verbose=True):
     It is caller's responsibility to make sure the alphabet contains all symbols in the registers!!
 
     Args:
-        program (list): the program is a list of instructions,
-            where each instruction is a tuple of the form (N, X, opcode, j, Y/N)
-        registers (tuple): a sequence of strings representing the initial values of registers
-        alphabet (string): a string a_1 a_2 ... a_k representing the alphabet
+        program (list): The program is a list of instructions,
+                        where each instruction is a tuple of the form (N, X, opcode, j, Y/N)
+        registers (tuple): A sequence of strings representing the initial values of registers
+        alphabet (string): A string a_1 a_2 ... a_k representing the alphabet
 
     Return: the return value of the RAM program
     """
@@ -111,6 +111,60 @@ def interpreter(program, registers, alphabet, verbose=True):
     return registers[0]
 
 
+def read_me_for_the_explanation_of_the_interpreters_input_format():
+    """
+    This is a toy example showing the input format of the RAM interpreter.
+    The following toy RAM program prints all symbols in the alphabet.
+
+    The "program" variable is a list of tuples. Each tuple is an instruction, following the same format as B2.
+
+    The "registers" variable is a list of strings. Each string represents the initial value of the registers.
+    The inputs to the RAM program being simulated are on the first few registers, the rest start as empty strings.
+
+    The "alphabet" variable is a string representing the alphabet.
+    """
+    print("------ toy examples ------")
+
+    program = [(-1, 0, 1, 1, 1),
+               (-1, 0, 1, 2, 1),
+               (-1, 0, 1, 3, 1),
+               (-1, 0, 1, 4, 1),
+               (-1, 0, 9, 0, 0),
+               ]
+    registers = [""]
+    alphabet = "abcd"
+
+    result = interpreter(program, registers, alphabet)
+
+    print("print out the alphabet = '{}'".format(result))
+    print()
+
+    """
+    The following RAM program does the same thing as the above, except that it is written in a readable format.
+    But it has to be translated to machine code before execution.
+    """
+    human_readable_program = [("  ", '  ', 'add   ', 'a', 'R2'),
+                              ("  ", '  ', 'add   ', 'b', 'R2'),
+                              ("  ", '  ', 'add   ', 'c', 'R2'),
+                              ("  ", '  ', 'add   ', 'd', 'R2'),
+                              ("  ", 'R1', 'assign', ' ', 'R2'),
+                              ("  ", '  ', 'gotob ', ' ', 'L0'),
+                              ("  ", '  ', 'clr   ', ' ', 'R1'),
+                              ("L0", '', 'continue', '', ''),
+                              ]
+    registers = ["", ""]
+    alphabet = "abcd"
+
+    result = interpreter(
+        [human2machine(xx, alphabet) for xx in human_readable_program],
+        registers,
+        alphabet
+        )
+
+    print("print out the alphabet = '{}'".format(result))
+    print()
+
+
 def test_concatenate(verbose):
     concatenate = [
         [-1,    3,     4,    0,   1],
@@ -135,9 +189,13 @@ def test_concatenate(verbose):
     lst_inputs = [
         ["", ""],
         ["", "a"],
+        ["", "b"],
         ["a", ""],
+        ["b", ""],
+        ["a", "bb"],
         ["b", "aa"],
         ["abab", "aa"],
+        ["abab", "bb"],
         ]
 
     print("------ concatenate function ------ ")
@@ -150,6 +208,8 @@ def test_concatenate(verbose):
 
         print("inputs = '{}' and '{}',".format(*inputs),
               "return = '{}'".format(result))
+
+    print()
 
 
 def test_reverse(verbose):
@@ -193,8 +253,8 @@ def test_reverse(verbose):
 
     alphabet = "ab"
 
-    # append new inputs in the end of the list
-    lst_inputs = ["", "a", "b", "aa", "bb", "aba", "bab", "abab", "baba", "aaabb"]
+    # Each string is a test case. Append new inputs in the end of the list
+    lst_inputs = ["", "a", "b", "aa", "bb", "aba", "bab", "abab", "baba", "aabbb", "aaabb"]
 
     print("------ reverse function ------ ")
 
@@ -207,6 +267,8 @@ def test_reverse(verbose):
 
         print("inputs = '{}',".format(inputs),
               "return = '{}'".format(result))
+
+    print()
 
 
 def test_triple(verbose):
@@ -244,8 +306,8 @@ def test_triple(verbose):
 
     alphabet = "ab"
 
-    # Each row is a test case. Append new inputs at the end of the list.
-    lst_inputs = ["", "a", "b", "aa", "abab"]
+    # Each string is a test case. Append new inputs at the end of the list.
+    lst_inputs = ["", "a", "b", "aa", "bb", "abab"]
 
     print("------ triple function ------ ")
 
@@ -258,6 +320,8 @@ def test_triple(verbose):
         print("inputs = '{}',".format(inputs),
               "return = '{}'".format(result))
 
+    print()
+
 
 if __name__ == "__main__":
     """
@@ -265,6 +329,8 @@ if __name__ == "__main__":
     Certain parts of the code cannot be run under python 2!!
     """
     verbose = False
+
+    read_me_for_the_explanation_of_the_interpreters_input_format()
 
     test_concatenate(verbose=verbose)
     test_reverse(verbose=verbose)
