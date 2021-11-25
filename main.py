@@ -19,6 +19,9 @@ def human2machine(instruction, alphabet):
 
 
 def machine2human(instruction, alphabet):
+    """
+    Translate a 0/1 machine instruction to a human readable instruction
+    """
     line, idx_reg_x, opcode, j, whatever = instruction
 
     line = "  " if line < 0 else "L{:d}".format(line)
@@ -64,10 +67,6 @@ def interpreter(program, registers, alphabet, verbose=True):
 
     Return: the return value of the RAM program
     """
-    # Add the placeholder # to make the index starting from 1
-    # registers = ["#"] + registers
-    # alphabet = "#" + alphabet
-
     pc = 0
 
     while pc in range(len(program)):
